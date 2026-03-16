@@ -806,19 +806,27 @@
     </div>
   </footer>
 
-  <script>
-    function joinWaitlist(inputId, msgId, formId, noteId) {
-      const email = document.getElementById(inputId).value;
-      if (!email || !email.includes('@')) {
-        document.getElementById(inputId).style.borderColor = '#EF4444';
-        return;
-      }
+  <<script>
+  async function joinWaitlist(inputId, msgId, formId, noteId) {
+    const email = document.getElementById(inputId).value;
+    if (!email || !email.includes('@')) {
+      document.getElementById(inputId).style.borderColor = '#EF4444';
+      return;
+    }
+    try {
+      await fetch('https://formspree.io/f/xkoqqbgr', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email })
+      });
       document.getElementById(formId) && (document.getElementById(formId).style.display = 'none');
       document.getElementById(noteId) && (document.getElementById(noteId).style.display = 'none');
       document.getElementById(msgId).style.display = 'block';
-      console.log('Waitlist:', email);
+    } catch(e) {
+      alert('Erreur, réessayez.');
     }
-  </script>
+  }
+</script>
 
 </body>
 </html>
