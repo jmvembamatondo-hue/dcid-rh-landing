@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CultureFit Radar — Recrutez pour la culture, pas juste les compétences</title>
+  <meta name="description" content="Mesurez l'alignement culturel entre vos candidats, équipes et organisation. La première plateforme RH de simulation prédictive d'intégration."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --navy: #0A1628;
+      --navy2: #0F1F3D;
+      --blue: #185FA5;
+      --teal: #028090;
+      --cyan: #38BDF8;
+      --gold: #D4A853;
+      --cream: #F5F0E8;
+      --white: #FAFAF8;
+      --grey: #8A8A8A;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--navy);
+      color: var(--white);
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 20px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: linear-gradient(to bottom, rgba(10,22,40,0.95), transparent);
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+
+    .logo-dot {
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      border: 2px solid var(--cyan);
+      background: rgba(56,189,248,0.1);
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    .logo-dot-inner {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      background: var(--cyan);
+      animation: pulse-dot 2s ease infinite;
+    }
+
+    @keyframes pulse-dot {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.3); opacity: 0.6; }
+    }
+
+    .logo-text {
+      font-family: 'Instrument Serif', serif;
+      font-size: 18px;
+      color: var(--white);
+    }
+
+    .logo-sub {
+      font-size: 10px;
+      color: rgba(255,255,255,0.4);
+      font-weight: 300;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      display: block;
+      margin-top: -2px;
+    }
+
+    .nav-cta {
+      background: var(--cyan);
+      color: var(--navy);
+      border: none;
+      padding: 10px 22px;
+      border-radius: 100px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: 'DM Sans', sans-serif;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+
+    .nav-cta:hover { opacity: 0.85; transform: translateY(-1px); }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 120px 40px 80px;
+      position: relative;
+      overflow: hidden;
+      text-align: center;
+    }
+
+    .hero-bg {
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 50% 0%, rgba(24,95,165,0.25) 0%, transparent 70%),
+        radial-gradient(ellipse 50% 40% at 80% 80%, rgba(2,128,144,0.15) 0%, transparent 60%),
+        radial-gradient(ellipse 40% 30% at 20% 60%, rgba(56,189,248,0.08) 0%, transparent 50%);
+    }
+
+    .hero-grid {
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+      background-size: 60px 60px;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(56,189,248,0.1);
+      border: 1px solid rgba(56,189,248,0.25);
+      border-radius: 100px;
+      padding: 6px 16px;
+      font-size: 12px;
+      color: var(--cyan);
+      font-weight: 500;
+      letter-spacing: 0.5px;
+      margin-bottom: 32px;
+      position: relative;
+    }
+
+    .badge-dot {
+      width: 6px; height: 6px;
+      background: var(--cyan);
+      border-radius: 50%;
+      animation: pulse-dot 2s ease infinite;
+    }
+
+    .hero h1 {
+      font-family: 'Instrument Serif', serif;
+      font-size: clamp(42px, 7vw, 80px);
+      line-height: 1.05;
+      letter-spacing: -2px;
+      max-width: 820px;
+      position: relative;
+      margin-bottom: 24px;
+    }
+
+    .hero h1 em { font-style: italic; color: var(--cyan); }
+
+    .hero-sub {
+      font-size: clamp(15px, 2vw, 18px);
+      color: rgba(255,255,255,0.55);
+      max-width: 520px;
+      line-height: 1.7;
+      margin-bottom: 48px;
+      position: relative;
+      font-weight: 300;
+    }
+
+    /* ── WAITLIST ── */
+    .waitlist-form {
+      display: flex;
+      gap: 10px;
+      max-width: 460px;
+      width: 100%;
+      position: relative;
+      margin-bottom: 16px;
+    }
+
+    .waitlist-input {
+      flex: 1;
+      padding: 14px 20px;
+      border-radius: 100px;
+      border: 1px solid rgba(255,255,255,0.15);
+      background: rgba(255,255,255,0.06);
+      color: var(--white);
+      font-size: 14px;
+      font-family: 'DM Sans', sans-serif;
+      outline: none;
+      transition: border-color 0.2s;
+      backdrop-filter: blur(10px);
+    }
+
+    .waitlist-input::placeholder { color: rgba(255,255,255,0.3); }
+    .waitlist-input:focus { border-color: var(--cyan); }
+
+    .waitlist-btn {
+      padding: 14px 28px;
+      border-radius: 100px;
+      border: none;
+      background: var(--cyan);
+      color: var(--navy);
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: 'DM Sans', sans-serif;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+
+    .waitlist-btn:hover { opacity: 0.85; transform: translateY(-1px); }
+
+    .waitlist-note {
+      font-size: 12px;
+      color: rgba(255,255,255,0.3);
+      position: relative;
+    }
+
+    .success-msg {
+      display: none;
+      background: rgba(59,109,17,0.2);
+      border: 1px solid rgba(74,222,128,0.3);
+      border-radius: 100px;
+      padding: 12px 24px;
+      font-size: 13px;
+      color: #4ADE80;
+      font-weight: 500;
+      margin-bottom: 16px;
+    }
+
+    /* ── RADAR ── */
+    .radar-visual {
+      position: relative;
+      width: 280px; height: 280px;
+      margin: 60px auto 0;
+    }
+
+    /* ── STATS ── */
+    .stats {
+      display: flex;
+      gap: 48px;
+      margin-top: 60px;
+      position: relative;
+    }
+
+    .stat { text-align: center; }
+
+    .stat-num {
+      font-family: 'Instrument Serif', serif;
+      font-size: 36px;
+      color: var(--cyan);
+      letter-spacing: -1px;
+      line-height: 1;
+    }
+
+    .stat-label {
+      font-size: 12px;
+      color: rgba(255,255,255,0.4);
+      margin-top: 4px;
+      font-weight: 300;
+      letter-spacing: 0.5px;
+    }
+
+    /* ── SECTIONS ── */
+    section {
+      padding: 100px 40px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--cyan);
+      font-weight: 500;
+      margin-bottom: 16px;
+    }
+
+    .section-title {
+      font-family: 'Instrument Serif', serif;
+      font-size: clamp(32px, 4vw, 52px);
+      line-height: 1.1;
+      letter-spacing: -1.5px;
+      margin-bottom: 20px;
+    }
+
+    .section-title em { font-style: italic; color: var(--cyan); }
+
+    .section-sub {
+      font-size: 16px;
+      color: rgba(255,255,255,0.5);
+      max-width: 500px;
+      line-height: 1.7;
+      font-weight: 300;
+    }
+
+    /* ── FEATURES ── */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+      margin-top: 60px;
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 16px;
+      overflow: hidden;
+    }
+
+    .feature-card {
+      padding: 36px 32px;
+      background: rgba(255,255,255,0.025);
+      border-right: 1px solid rgba(255,255,255,0.06);
+      transition: background 0.3s;
+    }
+
+    .feature-card:last-child { border-right: none; }
+    .feature-card:hover { background: rgba(255,255,255,0.05); }
+
+    .feature-icon {
+      width: 44px; height: 44px;
+      border-radius: 12px;
+      background: rgba(56,189,248,0.1);
+      border: 1px solid rgba(56,189,248,0.2);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px;
+      margin-bottom: 20px;
+    }
+
+    .feature-title {
+      font-family: 'Instrument Serif', serif;
+      font-size: 20px;
+      margin-bottom: 10px;
+      letter-spacing: -0.5px;
+    }
+
+    .feature-desc {
+      font-size: 14px;
+      color: rgba(255,255,255,0.45);
+      line-height: 1.7;
+      font-weight: 300;
+    }
+
+    /* ── LAYERS ── */
+    .layers {
+      margin-top: 60px;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      border-radius: 16px;
+      overflow: hidden;
+    }
+
+    .layer {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      padding: 28px 36px;
+      background: rgba(255,255,255,0.025);
+      border: 1px solid rgba(255,255,255,0.06);
+      transition: all 0.3s;
+    }
+
+    .layer:hover { background: rgba(255,255,255,0.045); }
+
+    .layer-num {
+      font-family: 'Instrument Serif', serif;
+      font-size: 48px;
+      color: rgba(255,255,255,0.08);
+      line-height: 1;
+      min-width: 48px;
+    }
+
+    .layer-content { flex: 1; }
+
+    .layer-title { font-size: 16px; font-weight: 600; margin-bottom: 4px; }
+
+    .layer-desc {
+      font-size: 13px;
+      color: rgba(255,255,255,0.4);
+      font-weight: 300;
+    }
+
+    .layer-badge {
+      font-size: 11px;
+      padding: 4px 12px;
+      border-radius: 100px;
+      font-weight: 500;
+    }
+
+    /* ── DIMS ── */
+    .dims-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 48px;
+    }
+
+    .dim-card {
+      padding: 20px 22px;
+      border-radius: 12px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.07);
+      transition: all 0.2s;
+    }
+
+    .dim-card:hover {
+      background: rgba(56,189,248,0.06);
+      border-color: rgba(56,189,248,0.2);
+      transform: translateY(-2px);
+    }
+
+    .dim-name { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+
+    .dim-theory { font-size: 11px; color: rgba(255,255,255,0.3); font-weight: 300; }
+
+    .dim-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--cyan);
+      margin-bottom: 10px;
+    }
+
+    /* ── PROOF ── */
+    .proof-section {
+      text-align: center;
+      padding: 80px 40px;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .proof-logos {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 48px;
+      flex-wrap: wrap;
+      opacity: 0.4;
+      margin-top: 32px;
+    }
+
+    .proof-logo {
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    /* ── CTA FINAL ── */
+    .cta-section {
+      text-align: center;
+      padding: 120px 40px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-bg {
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 70% 80% at 50% 50%, rgba(24,95,165,0.2) 0%, transparent 70%);
+    }
+
+    .cta-section h2 {
+      font-family: 'Instrument Serif', serif;
+      font-size: clamp(36px, 5vw, 64px);
+      line-height: 1.08;
+      letter-spacing: -2px;
+      max-width: 700px;
+      margin: 0 auto 24px;
+      position: relative;
+    }
+
+    .cta-section h2 em { font-style: italic; color: var(--cyan); }
+
+    .cta-sub {
+      font-size: 16px;
+      color: rgba(255,255,255,0.45);
+      margin-bottom: 40px;
+      position: relative;
+      font-weight: 300;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      padding: 40px;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .footer-copy { font-size: 12px; color: rgba(255,255,255,0.25); font-weight: 300; }
+
+    .footer-links { display: flex; gap: 24px; }
+
+    .footer-links a {
+      font-size: 12px;
+      color: rgba(255,255,255,0.3);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover { color: var(--cyan); }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .anim-1 { animation: fadeUp 0.7s ease 0.1s both; }
+    .anim-2 { animation: fadeUp 0.7s ease 0.25s both; }
+    .anim-3 { animation: fadeUp 0.7s ease 0.4s both; }
+    .anim-4 { animation: fadeUp 0.7s ease 0.55s both; }
+    .anim-5 { animation: fadeUp 0.7s ease 0.7s both; }
+
+    @media (max-width: 768px) {
+      nav { padding: 16px 20px; }
+      .hero { padding: 100px 20px 60px; }
+      .stats { gap: 28px; }
+      .features-grid { grid-template-columns: 1fr; }
+      .dims-grid { grid-template-columns: 1fr 1fr; }
+      .waitlist-form { flex-direction: column; }
+      footer { flex-direction: column; gap: 16px; text-align: center; }
+      section { padding: 60px 20px; }
+      .layer { flex-direction: column; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="#" class="logo">
+      <div class="logo-dot"><div class="logo-dot-inner"></div></div>
+      <div>
+        <span class="logo-text">CultureFit Radar</span>
+        <span class="logo-sub">by DCID-RH</span>
+      </div>
+    </a>
+    <a href="https://dcid-rh-app-fr4x.vercel.app/" class="nav-cta" target="_blank">
+      Accéder à l'app →
+    </a>
+  </nav>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-grid"></div>
+
+    <div class="hero-badge anim-1">
+      <div class="badge-dot"></div>
+      Actuellement en accès anticipé · EuraTechnologies, Lille
+    </div>
+
+    <h1 class="anim-2">
+      Recrutez pour la <em>culture</em>,<br/>pas juste les compétences
+    </h1>
+
+    <p class="hero-sub anim-3">
+      La première plateforme RH qui mesure scientifiquement l'alignement culturel entre un candidat, son équipe et votre organisation — avant toute décision.
+    </p>
+
+    <div class="waitlist-form anim-4">
+      <input type="email" class="waitlist-input" id="emailInput" placeholder="votre@email.fr" />
+      <button class="waitlist-btn" onclick="joinWaitlist('emailInput','successMsg','form1','note1')">
+        Rejoindre la liste
+      </button>
+    </div>
+    <div class="success-msg" id="successMsg">✓ Vous êtes sur la liste ! On vous contacte en priorité.</div>
+    <p class="waitlist-note" id="note1">Gratuit · Pas de spam · Accès prioritaire à la version complète</p>
+
+    <!-- Radar SVG -->
+    <div class="radar-visual anim-5">
+      <svg viewBox="0 0 280 280" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%">
+        <defs>
+          <radialGradient id="rg" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#38BDF8" stop-opacity="0.3"/>
+            <stop offset="100%" stop-color="#185FA5" stop-opacity="0.05"/>
+          </radialGradient>
+        </defs>
+        <circle cx="140" cy="140" r="110" fill="none" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+        <circle cx="140" cy="140" r="82" fill="none" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+        <circle cx="140" cy="140" r="55" fill="none" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+        <circle cx="140" cy="140" r="27" fill="none" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+        <line x1="140" y1="30" x2="140" y2="250" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+        <line x1="30" y1="140" x2="250" y2="140" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+        <line x1="62" y1="62" x2="218" y2="218" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+        <line x1="218" y1="62" x2="62" y2="218" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+        <line x1="44" y1="107" x2="236" y2="173" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+        <line x1="44" y1="173" x2="236" y2="107" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+        <line x1="107" y1="44" x2="173" y2="236" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+        <line x1="173" y1="44" x2="107" y2="236" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+        <polygon points="140,42 196,72 218,140 196,196 140,218 84,196 62,140 84,72"
+          fill="url(#rg)" stroke="#38BDF8" stroke-width="1.5" opacity="0.9"/>
+        <polygon points="140,58 188,84 208,140 188,184 140,208 92,184 72,140 92,84"
+          fill="none" stroke="rgba(2,128,144,0.5)" stroke-width="1" stroke-dasharray="4,3"/>
+        <circle cx="140" cy="42" r="3" fill="#38BDF8"/>
+        <circle cx="196" cy="72" r="3" fill="#38BDF8"/>
+        <circle cx="218" cy="140" r="3" fill="#38BDF8"/>
+        <circle cx="196" cy="196" r="3" fill="#38BDF8"/>
+        <circle cx="140" cy="218" r="3" fill="#38BDF8"/>
+        <circle cx="84" cy="196" r="3" fill="#38BDF8"/>
+        <circle cx="62" cy="140" r="3" fill="#38BDF8"/>
+        <circle cx="84" cy="72" r="3" fill="#38BDF8"/>
+        <text x="140" y="24" text-anchor="middle" font-size="9" fill="rgba(255,255,255,0.35)" font-family="DM Sans">Autonomie</text>
+        <text x="210" y="68" text-anchor="start" font-size="9" fill="rgba(255,255,255,0.35)" font-family="DM Sans">Innovation</text>
+        <text x="226" y="143" text-anchor="start" font-size="9" fill="rgba(255,255,255,0.35)" font-family="DM Sans">Comm.</text>
+        <text x="210" y="206" text-anchor="start" font-size="9" fill="rgba(255,255,255,0.35)" font-family="DM Sans">Structure</text>
+        <text x="140" y="232" text-anchor="middle" font-size="9" fill="rgba(255,255,255,0.35)" font-family="DM Sans">Ownership</text>
+        <text x="70" y="206" text-anchor="end" font-size="9" fill="rgba(255,255,255,0.35)" font-family="DM Sans">Vision</text>
+        <text x="54" y="143" text-anchor="end" font-size="9" fill="rgba(255,255,255,0.35)" font-family="DM Sans">Décision</text>
+        <text x="70" y="68" text-anchor="end" font-size="9" fill="rgba(255,255,255,0.35)" font-family="DM Sans">Rythme</text>
+        <circle cx="140" cy="140" r="28" fill="rgba(10,22,40,0.9)" stroke="rgba(56,189,248,0.3)" stroke-width="1"/>
+        <text x="140" y="136" text-anchor="middle" font-size="16" fill="#38BDF8" font-family="Instrument Serif" font-weight="bold">87</text>
+        <text x="140" y="148" text-anchor="middle" font-size="7" fill="rgba(255,255,255,0.4)" font-family="DM Sans">/100</text>
+      </svg>
+    </div>
+
+    <div class="stats anim-5">
+      <div class="stat">
+        <div class="stat-num">9</div>
+        <div class="stat-label">dimensions culturelles</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">3</div>
+        <div class="stat-label">niveaux d'analyse</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">78%</div>
+        <div class="stat-label">des PME peinent à recruter</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FEATURES -->
+  <section>
+    <div class="section-label">Le produit</div>
+    <h2 class="section-title">
+      Ce que vous ne pouvez pas mesurer,<br/>vous ne pouvez pas <em>gérer</em>
+    </h2>
+    <p class="section-sub">CultureFit Radar transforme l'intuition RH en décision data-driven.</p>
+
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">🎯</div>
+        <div class="feature-title">Évaluation individuelle</div>
+        <p class="feature-desc">Lien unique envoyé au candidat. 9 questions. Score CultureFit calculé en temps réel sur 9 dimensions scientifiques.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🔬</div>
+        <div class="feature-title">Simulation prédictive</div>
+        <p class="feature-desc">Mesurez l'impact d'un recrutement sur la cohésion d'équipe avant de signer. Rapport avant/après avec plan d'accompagnement.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📊</div>
+        <div class="feature-title">Multi-scénarios</div>
+        <p class="feature-desc">Comparez plusieurs candidats sur la même équipe. Classement automatique 🥇🥈🥉 par score d'intégration.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3 LAYERS -->
+  <section style="border-top: 1px solid rgba(255,255,255,0.06);">
+    <div class="section-label">Architecture tricouche</div>
+    <h2 class="section-title">
+      Individu × Équipe<br/>× <em>Organisation</em>
+    </h2>
+
+    <div class="layers">
+      <div class="layer">
+        <div class="layer-num">01</div>
+        <div class="layer-content">
+          <div class="layer-title">Candidat — 27 questions</div>
+          <div class="layer-desc">Profil culturel individuel via lien unique sécurisé. Score CultureFit sur 9 dimensions.</div>
+        </div>
+        <div class="layer-badge" style="background:rgba(59,109,17,0.15);color:#4ADE80;border:1px solid rgba(74,222,128,0.2);">Score 0–100</div>
+      </div>
+      <div class="layer">
+        <div class="layer-num">02</div>
+        <div class="layer-content">
+          <div class="layer-title">Équipe — 18 questions</div>
+          <div class="layer-desc">Culture collective réelle, mesurée par tous les membres. Profil équipe agrégé et anonymisé.</div>
+        </div>
+        <div class="layer-badge" style="background:rgba(24,95,165,0.15);color:#38BDF8;border:1px solid rgba(56,189,248,0.2);">Cohésion mesurée</div>
+      </div>
+      <div class="layer">
+        <div class="layer-num">03</div>
+        <div class="layer-content">
+          <div class="layer-title">Organisation — 12 questions</div>
+          <div class="layer-desc">Culture organisationnelle déclarée par la direction. 3 questions de cohérence valeur/pratique.</div>
+        </div>
+        <div class="layer-badge" style="background:rgba(133,79,11,0.15);color:#FBBF24;border:1px solid rgba(251,191,36,0.2);">ADN culturel</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 9 DIMENSIONS -->
+  <section style="border-top: 1px solid rgba(255,255,255,0.06);">
+    <div class="section-label">Ancrage scientifique</div>
+    <h2 class="section-title">9 dimensions,<br/>16 <em>références académiques</em></h2>
+    <p class="section-sub">Chaque dimension est ancrée dans une théorie scientifique validée par des décennies de recherche.</p>
+
+    <div class="dims-grid">
+      <div class="dim-card">
+        <div class="dim-dot"></div>
+        <div class="dim-name">Autonomie</div>
+        <div class="dim-theory">Self-Determination Theory · Deci & Ryan, 1985</div>
+      </div>
+      <div class="dim-card">
+        <div class="dim-dot" style="background:#028090"></div>
+        <div class="dim-name">Innovation</div>
+        <div class="dim-theory">Competing Values Framework · Quinn, 1983</div>
+      </div>
+      <div class="dim-card">
+        <div class="dim-dot" style="background:#D4A853"></div>
+        <div class="dim-name">Communication</div>
+        <div class="dim-theory">The Culture Map · Erin Meyer, 2014</div>
+      </div>
+      <div class="dim-card">
+        <div class="dim-dot" style="background:#8B5CF6"></div>
+        <div class="dim-name">Structure</div>
+        <div class="dim-theory">Configurations organisationnelles · Mintzberg, 1979</div>
+      </div>
+      <div class="dim-card">
+        <div class="dim-dot" style="background:#F59E0B"></div>
+        <div class="dim-name">Ownership</div>
+        <div class="dim-theory">Psychological Ownership · Pierce et al., 2001</div>
+      </div>
+      <div class="dim-card">
+        <div class="dim-dot" style="background:#10B981"></div>
+        <div class="dim-name">Vision</div>
+        <div class="dim-theory">Transformational Leadership · Bass & Avolio, 1994</div>
+      </div>
+      <div class="dim-card">
+        <div class="dim-dot" style="background:#EF4444"></div>
+        <div class="dim-name">Décision</div>
+        <div class="dim-theory">Vroom-Yetton Decision Model · 1973</div>
+      </div>
+      <div class="dim-card">
+        <div class="dim-dot" style="background:#0EA5E9"></div>
+        <div class="dim-name">Rythme</div>
+        <div class="dim-theory">Organizational Ambidexterity · March, 1991</div>
+      </div>
+      <div class="dim-card">
+        <div class="dim-dot" style="background:#3B6D11"></div>
+        <div class="dim-name">Collaboration</div>
+        <div class="dim-theory">OCAI · Cameron & Quinn, 1999</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROOF -->
+  <div class="proof-section">
+    <p style="font-size:12px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.25);font-weight:500;">Incubé à</p>
+    <div class="proof-logos">
+      <span class="proof-logo">EuraTechnologies</span>
+      <span class="proof-logo" style="font-size:10px;opacity:0.5">·</span>
+      <span class="proof-logo">Lille, France</span>
+      <span class="proof-logo" style="font-size:10px;opacity:0.5">·</span>
+      <span class="proof-logo">HRTech</span>
+    </div>
+  </div>
+
+  <!-- CTA FINAL -->
+  <div class="cta-section">
+    <div class="cta-bg"></div>
+    <div class="hero-badge" style="margin: 0 auto 28px;">
+      <div class="badge-dot"></div>
+      Rejoignez les 50 premiers DRH
+    </div>
+    <h2>Prêt à recruter<br/>avec <em>certitude</em> ?</h2>
+    <p class="cta-sub">Accès anticipé gratuit pour les 50 premiers DRH inscrits.</p>
+
+    <div class="waitlist-form" id="form2" style="margin: 0 auto 16px;">
+      <input type="email" class="waitlist-input" id="emailInput2" placeholder="votre@email.fr" />
+      <button class="waitlist-btn" onclick="joinWaitlist('emailInput2','successMsg2','form2','note2')">
+        Rejoindre →
+      </button>
+    </div>
+    <div class="success-msg" id="successMsg2">✓ Vous êtes sur la liste !</div>
+    <p class="waitlist-note" id="note2" style="position:relative;">Gratuit · Accès prioritaire · On vous contacte sous 48h</p>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div>
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+        <div class="logo-dot" style="width:22px;height:22px;">
+          <div class="logo-dot-inner" style="width:7px;height:7px;"></div>
+        </div>
+        <span style="font-family:'Instrument Serif',serif;font-size:14px;">CultureFit Radar</span>
+      </div>
+      <p class="footer-copy">© 2026 DCID-RH · EuraTechnologies, Lille · Tous droits réservés</p>
+    </div>
+    <div class="footer-links">
+      <a href="https://dcid-rh-app-fr4x.vercel.app/" target="_blank">Accéder à l'app</a>
+      <a href="mailto:jmvembamatondo@gmail.com">Contact</a>
+    </div>
+  </footer>
+
+  <script>
+    function joinWaitlist(inputId, msgId, formId, noteId) {
+      const email = document.getElementById(inputId).value;
+      if (!email || !email.includes('@')) {
+        document.getElementById(inputId).style.borderColor = '#EF4444';
+        return;
+      }
+      document.getElementById(formId) && (document.getElementById(formId).style.display = 'none');
+      document.getElementById(noteId) && (document.getElementById(noteId).style.display = 'none');
+      document.getElementById(msgId).style.display = 'block';
+      console.log('Waitlist:', email);
+    }
+  </script>
+
+</body>
+</html>
