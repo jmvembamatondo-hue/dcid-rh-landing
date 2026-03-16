@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Étude terrain — CultureFit Radar</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --navy: #0A1628;
+      --blue: #185FA5;
+      --cyan: #38BDF8;
+      --white: #FAFAF8;
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--navy);
+      color: var(--white);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+    }
+
+    .bg {
+      position: fixed; inset: 0;
+      background:
+        radial-gradient(ellipse 70% 50% at 50% 0%, rgba(24,95,165,0.2) 0%, transparent 70%),
+        radial-gradient(ellipse 40% 40% at 80% 80%, rgba(2,128,144,0.1) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    .grid {
+      position: fixed; inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+      background-size: 60px 60px;
+      pointer-events: none;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 640px;
+      position: relative;
+    }
+
+    /* ── HEADER ── */
+    .header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .logo {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 28px;
+    }
+
+    .logo-dot {
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      border: 2px solid var(--cyan);
+      background: rgba(56,189,248,0.1);
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    .logo-dot-inner {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      background: var(--cyan);
+      animation: pulse 2s ease infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.3); opacity: 0.6; }
+    }
+
+    .logo-text {
+      font-family: 'Instrument Serif', serif;
+      font-size: 18px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(56,189,248,0.1);
+      border: 1px solid rgba(56,189,248,0.2);
+      border-radius: 100px;
+      padding: 5px 14px;
+      font-size: 11px;
+      color: var(--cyan);
+      font-weight: 500;
+      letter-spacing: 0.5px;
+      margin-bottom: 20px;
+    }
+
+    .badge-dot {
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: var(--cyan);
+      animation: pulse 2s ease infinite;
+    }
+
+    .header h1 {
+      font-family: 'Instrument Serif', serif;
+      font-size: clamp(28px, 5vw, 42px);
+      line-height: 1.1;
+      letter-spacing: -1px;
+      margin-bottom: 14px;
+    }
+
+    .header h1 em { font-style: italic; color: var(--cyan); }
+
+    .header p {
+      font-size: 15px;
+      color: rgba(255,255,255,0.5);
+      line-height: 1.7;
+      font-weight: 300;
+      max-width: 480px;
+      margin: 0 auto 20px;
+    }
+
+    .meta {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      font-size: 12px;
+      color: rgba(255,255,255,0.3);
+    }
+
+    .meta span { display: flex; align-items: center; gap: 5px; }
+
+    /* ── PROGRESS ── */
+    .progress-bar {
+      background: rgba(255,255,255,0.06);
+      border-radius: 100px;
+      height: 3px;
+      margin-bottom: 32px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: var(--cyan);
+      border-radius: 100px;
+      transition: width 0.4s ease;
+    }
+
+    .progress-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      color: rgba(255,255,255,0.3);
+      margin-bottom: 8px;
+    }
+
+    /* ── QUESTION CARD ── */
+    .question-card {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 20px;
+      padding: 36px;
+      margin-bottom: 20px;
+      animation: fadeUp 0.4s ease both;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .q-num {
+      font-size: 11px;
+      color: var(--cyan);
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .q-text {
+      font-family: 'Instrument Serif', serif;
+      font-size: clamp(18px, 3vw, 24px);
+      line-height: 1.3;
+      letter-spacing: -0.5px;
+      margin-bottom: 28px;
+    }
+
+    /* ── RADIO OPTIONS ── */
+    .options { display: flex; flex-direction: column; gap: 10px; }
+
+    .option {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 14px 18px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.02);
+      cursor: pointer;
+      transition: all 0.2s;
+      font-size: 14px;
+      color: rgba(255,255,255,0.7);
+    }
+
+    .option:hover {
+      border-color: rgba(56,189,248,0.3);
+      background: rgba(56,189,248,0.05);
+      color: var(--white);
+    }
+
+    .option.selected {
+      border-color: var(--cyan);
+      background: rgba(56,189,248,0.1);
+      color: var(--white);
+    }
+
+    .option-dot {
+      width: 18px; height: 18px;
+      border-radius: 50%;
+      border: 2px solid rgba(255,255,255,0.2);
+      flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.2s;
+    }
+
+    .option.selected .option-dot {
+      border-color: var(--cyan);
+      background: var(--cyan);
+    }
+
+    .option.selected .option-dot::after {
+      content: '';
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--navy);
+    }
+
+    /* ── CHECKBOX OPTIONS ── */
+    .option-check {
+      width: 18px; height: 18px;
+      border-radius: 5px;
+      border: 2px solid rgba(255,255,255,0.2);
+      flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.2s;
+      font-size: 10px;
+    }
+
+    .option.selected .option-check {
+      border-color: var(--cyan);
+      background: var(--cyan);
+      color: var(--navy);
+    }
+
+    /* ── TEXT INPUT ── */
+    .text-input {
+      width: 100%;
+      padding: 14px 18px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.1);
+      background: rgba(255,255,255,0.04);
+      color: var(--white);
+      font-size: 14px;
+      font-family: 'DM Sans', sans-serif;
+      outline: none;
+      transition: border-color 0.2s;
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    .text-input::placeholder { color: rgba(255,255,255,0.25); }
+    .text-input:focus { border-color: var(--cyan); }
+
+    /* ── SCALE ── */
+    .scale {
+      display: flex;
+      gap: 8px;
+      margin-top: 4px;
+    }
+
+    .scale-btn {
+      flex: 1;
+      padding: 14px 8px;
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.1);
+      background: rgba(255,255,255,0.03);
+      color: rgba(255,255,255,0.5);
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s;
+      font-family: 'DM Sans', sans-serif;
+      text-align: center;
+    }
+
+    .scale-btn:hover {
+      border-color: rgba(56,189,248,0.3);
+      background: rgba(56,189,248,0.05);
+      color: var(--white);
+    }
+
+    .scale-btn.selected {
+      border-color: var(--cyan);
+      background: var(--cyan);
+      color: var(--navy);
+    }
+
+    .scale-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      color: rgba(255,255,255,0.25);
+      margin-top: 8px;
+    }
+
+    /* ── NAV BUTTONS ── */
+    .nav-btns {
+      display: flex;
+      gap: 12px;
+      justify-content: flex-end;
+    }
+
+    .btn-prev {
+      padding: 12px 24px;
+      border-radius: 100px;
+      border: 1px solid rgba(255,255,255,0.1);
+      background: none;
+      color: rgba(255,255,255,0.5);
+      font-size: 14px;
+      cursor: pointer;
+      font-family: 'DM Sans', sans-serif;
+      transition: all 0.2s;
+    }
+
+    .btn-prev:hover { border-color: rgba(255,255,255,0.2); color: var(--white); }
+
+    .btn-next {
+      padding: 12px 28px;
+      border-radius: 100px;
+      border: none;
+      background: var(--cyan);
+      color: var(--navy);
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: 'DM Sans', sans-serif;
+      transition: all 0.2s;
+    }
+
+    .btn-next:hover { opacity: 0.85; transform: translateY(-1px); }
+    .btn-next:disabled { opacity: 0.3; cursor: not-allowed; transform: none; }
+
+    /* ── SUCCESS ── */
+    .success {
+      display: none;
+      text-align: center;
+      padding: 60px 40px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 20px;
+      animation: fadeUp 0.5s ease both;
+    }
+
+    .success-icon { font-size: 56px; margin-bottom: 20px; }
+
+    .success h2 {
+      font-family: 'Instrument Serif', serif;
+      font-size: 32px;
+      letter-spacing: -1px;
+      margin-bottom: 12px;
+    }
+
+    .success h2 em { font-style: italic; color: var(--cyan); }
+
+    .success p {
+      font-size: 15px;
+      color: rgba(255,255,255,0.5);
+      line-height: 1.7;
+      font-weight: 300;
+      margin-bottom: 28px;
+    }
+
+    .success-cta {
+      display: inline-block;
+      padding: 12px 28px;
+      border-radius: 100px;
+      background: var(--cyan);
+      color: var(--navy);
+      font-size: 14px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+
+    .success-cta:hover { opacity: 0.85; }
+  </style>
+</head>
+<body>
+  <div class="bg"></div>
+  <div class="grid"></div>
+
+  <div class="container">
+
+    <!-- HEADER -->
+    <div class="header">
+      <div class="logo">
+        <div class="logo-dot"><div class="logo-dot-inner"></div></div>
+        <span class="logo-text">CultureFit Radar</span>
+      </div>
+      <div class="badge">
+        <div class="badge-dot"></div>
+        Étude terrain · 5 minutes
+      </div>
+      <h1>Aidez-nous à construire<br/>l'outil RH qu'il vous <em>faut</em></h1>
+      <p>7 questions pour comprendre vos enjeux de recrutement et d'intégration culturelle. Vos réponses façonnent directement le produit.</p>
+      <div class="meta">
+        <span>⏱ 5 minutes</span>
+        <span>🔒 Anonyme</span>
+        <span>📊 7 questions</span>
+      </div>
+    </div>
+
+    <!-- PROGRESS -->
+    <div class="progress-label">
+      <span id="progressText">Question 1 sur 7</span>
+      <span id="progressPct">14%</span>
+    </div>
+    <div class="progress-bar">
+      <div class="progress-fill" id="progressFill" style="width:14%"></div>
+    </div>
+
+    <!-- FORM -->
+    <form id="mainForm">
+
+      <!-- Q1 -->
+      <div class="question-card" id="q1">
+        <div class="q-num">Question 1 — Profil</div>
+        <div class="q-text">Quel est votre rôle dans votre organisation ?</div>
+        <div class="options" id="q1-options">
+          <div class="option" onclick="selectRadio('q1','DRH / Responsable RH')">
+            <div class="option-dot"></div> DRH / Responsable RH
+          </div>
+          <div class="option" onclick="selectRadio('q1','Dirigeant / CEO')">
+            <div class="option-dot"></div> Dirigeant / CEO
+          </div>
+          <div class="option" onclick="selectRadio('q1','Manager / Chef d\'équipe')">
+            <div class="option-dot"></div> Manager / Chef d'équipe
+          </div>
+          <div class="option" onclick="selectRadio('q1','Consultant RH / Recruteur')">
+            <div class="option-dot"></div> Consultant RH / Recruteur
+          </div>
+          <div class="option" onclick="selectRadio('q1','Autre')">
+            <div class="option-dot"></div> Autre
+          </div>
+        </div>
+      </div>
+
+      <!-- Q2 -->
+      <div class="question-card" id="q2" style="display:none">
+        <div class="q-num">Question 2 — Douleur</div>
+        <div class="q-text">Avez-vous déjà vécu un recrutement qui a <em>mal tourné</em> à cause d'un problème culturel ?</div>
+        <div class="options" id="q2-options">
+          <div class="option" onclick="selectRadio('q2','Oui, plusieurs fois')">
+            <div class="option-dot"></div> Oui, plusieurs fois
+          </div>
+          <div class="option" onclick="selectRadio('q2','Oui, une ou deux fois')">
+            <div class="option-dot"></div> Oui, une ou deux fois
+          </div>
+          <div class="option" onclick="selectRadio('q2','Non, jamais')">
+            <div class="option-dot"></div> Non, jamais
+          </div>
+          <div class="option" onclick="selectRadio('q2','Je ne sais pas évaluer si c\'était culturel')">
+            <div class="option-dot"></div> Je ne sais pas évaluer si c'était culturel
+          </div>
+        </div>
+      </div>
+
+      <!-- Q3 -->
+      <div class="question-card" id="q3" style="display:none">
+        <div class="q-num">Question 3 — Pratiques actuelles</div>
+        <div class="q-text">Comment évaluez-vous actuellement l'adéquation culturelle d'un candidat ?</div>
+        <div class="options" id="q3-options">
+          <div class="option" onclick="selectRadio('q3','Intuition / ressenti en entretien')">
+            <div class="option-dot"></div> Intuition / ressenti en entretien
+          </div>
+          <div class="option" onclick="selectRadio('q3','Questions spécifiques en entretien')">
+            <div class="option-dot"></div> Questions spécifiques en entretien
+          </div>
+          <div class="option" onclick="selectRadio('q3','Tests psychométriques (MBTI, DISC...)')">
+            <div class="option-dot"></div> Tests psychométriques (MBTI, DISC...)
+          </div>
+          <div class="option" onclick="selectRadio('q3','Outil dédié au culture fit')">
+            <div class="option-dot"></div> Outil dédié au culture fit
+          </div>
+          <div class="option" onclick="selectRadio('q3','On ne l\'évalue pas vraiment')">
+            <div class="option-dot"></div> On ne l'évalue pas vraiment
+          </div>
+        </div>
+      </div>
+
+      <!-- Q4 -->
+      <div class="question-card" id="q4" style="display:none">
+        <div class="q-num">Question 4 — Intérêt produit</div>
+        <div class="q-text">Sur une échelle de 1 à 5, à quel point seriez-vous intéressé par un outil qui mesure <em>scientifiquement</em> l'alignement culturel candidat/équipe/organisation ?</div>
+        <div class="scale" id="q4-scale">
+          <button type="button" class="scale-btn" onclick="selectScale('q4','1')">1</button>
+          <button type="button" class="scale-btn" onclick="selectScale('q4','2')">2</button>
+          <button type="button" class="scale-btn" onclick="selectScale('q4','3')">3</button>
+          <button type="button" class="scale-btn" onclick="selectScale('q4','4')">4</button>
+          <button type="button" class="scale-btn" onclick="selectScale('q4','5')">5</button>
+        </div>
+        <div class="scale-labels">
+          <span>Pas du tout</span>
+          <span>Extrêmement intéressé</span>
+        </div>
+      </div>
+
+      <!-- Q5 -->
+      <div class="question-card" id="q5" style="display:none">
+        <div class="q-num">Question 5 — Fonctionnalité clé</div>
+        <div class="q-text">Quelle fonctionnalité vous semble la plus utile ?</div>
+        <div class="options" id="q5-options">
+          <div class="option" onclick="selectRadio('q5','Évaluation culturelle du candidat via un lien unique')">
+            <div class="option-dot"></div> Évaluation culturelle du candidat via un lien unique
+          </div>
+          <div class="option" onclick="selectRadio('q5','Simulation de l\'impact d\'un recrutement sur la cohésion d\'équipe')">
+            <div class="option-dot"></div> Simulation de l'impact d'un recrutement sur la cohésion d'équipe
+          </div>
+          <div class="option" onclick="selectRadio('q5','Comparaison de plusieurs candidats pour un même poste')">
+            <div class="option-dot"></div> Comparaison de plusieurs candidats pour un même poste
+          </div>
+          <div class="option" onclick="selectRadio('q5','Rapport PDF automatique par candidat')">
+            <div class="option-dot"></div> Rapport PDF automatique par candidat
+          </div>
+          <div class="option" onclick="selectRadio('q5','Plan d\'accompagnement personnalisé')">
+            <div class="option-dot"></div> Plan d'accompagnement personnalisé
+          </div>
+        </div>
+      </div>
+
+      <!-- Q6 -->
+      <div class="question-card" id="q6" style="display:none">
+        <div class="q-num">Question 6 — Volonté de payer</div>
+        <div class="q-text">Quel budget mensuel seriez-vous prêt à allouer à un tel outil ?</div>
+        <div class="options" id="q6-options">
+          <div class="option" onclick="selectRadio('q6','Moins de 50€/mois')">
+            <div class="option-dot"></div> Moins de 50€/mois
+          </div>
+          <div class="option" onclick="selectRadio('q6','50€ – 150€/mois')">
+            <div class="option-dot"></div> 50€ – 150€/mois
+          </div>
+          <div class="option" onclick="selectRadio('q6','150€ – 300€/mois')">
+            <div class="option-dot"></div> 150€ – 300€/mois
+          </div>
+          <div class="option" onclick="selectRadio('q6','Plus de 300€/mois')">
+            <div class="option-dot"></div> Plus de 300€/mois
+          </div>
+          <div class="option" onclick="selectRadio('q6','Je préfère un paiement à l\'usage')">
+            <div class="option-dot"></div> Je préfère un paiement à l'usage
+          </div>
+        </div>
+      </div>
+
+      <!-- Q7 -->
+      <div class="question-card" id="q7" style="display:none">
+        <div class="q-num">Question 7 — Contact</div>
+        <div class="q-text">Souhaitez-vous être contacté pour tester la version bêta en avant-première ?</div>
+        <div class="options" id="q7-options" style="margin-bottom:16px">
+          <div class="option" onclick="selectRadio('q7','Oui, je veux tester en avant-première');toggleEmail(true)">
+            <div class="option-dot"></div> Oui, je veux tester en avant-première ⭐
+          </div>
+          <div class="option" onclick="selectRadio('q7','Oui, tenez-moi informé');toggleEmail(true)">
+            <div class="option-dot"></div> Oui, tenez-moi informé
+          </div>
+          <div class="option" onclick="selectRadio('q7','Non merci');toggleEmail(false)">
+            <div class="option-dot"></div> Non merci
+          </div>
+        </div>
+        <div id="emailField" style="display:none;margin-top:12px">
+          <input type="email" class="text-input" id="emailContact"
+            placeholder="votre@email.fr" style="min-height:auto;padding:14px 18px;resize:none"/>
+        </div>
+      </div>
+
+    </form>
+
+    <!-- NAV BUTTONS -->
+    <div class="nav-btns" id="navBtns">
+      <button class="btn-prev" id="btnPrev" onclick="prevQ()" style="display:none">← Précédent</button>
+      <button class="btn-next" id="btnNext" onclick="nextQ()">Suivant →</button>
+    </div>
+
+    <!-- SUCCESS -->
+    <div class="success" id="successScreen">
+      <div class="success-icon">🎉</div>
+      <h2>Merci pour votre <em>contribution</em> !</h2>
+      <p>Vos réponses nous aident à construire l'outil RH dont vous avez besoin. Nous vous tiendrons informé de l'avancement du projet.</p>
+      <a href="https://dcid-rh-landing.vercel.app" class="success-cta">Découvrir CultureFit Radar →</a>
+    </div>
+
+  </div>
+
+  <script>
+    const TOTAL = 7;
+    let current = 1;
+    const answers = {};
+
+    function updateProgress() {
+      const pct = Math.round((current / TOTAL) * 100);
+      document.getElementById('progressFill').style.width = pct + '%';
+      document.getElementById('progressText').textContent = `Question ${current} sur ${TOTAL}`;
+      document.getElementById('progressPct').textContent = pct + '%';
+    }
+
+    function selectRadio(qId, value) {
+      answers[qId] = value;
+      document.querySelectorAll(`#${qId}-options .option`).forEach(o => {
+        o.classList.toggle('selected', o.textContent.trim().startsWith(value.substring(0,20)));
+      });
+      document.getElementById('btnNext').disabled = false;
+    }
+
+    function selectScale(qId, value) {
+      answers[qId] = value;
+      document.querySelectorAll(`#${qId}-scale .scale-btn`).forEach(b => {
+        b.classList.toggle('selected', b.textContent === value);
+      });
+      document.getElementById('btnNext').disabled = false;
+    }
+
+    function toggleEmail(show) {
+      document.getElementById('emailField').style.display = show ? 'block' : 'none';
+    }
+
+    function showQ(n) {
+      for (let i = 1; i <= TOTAL; i++) {
+        const el = document.getElementById('q' + i);
+        if (el) el.style.display = i === n ? 'block' : 'none';
+      }
+      document.getElementById('btnPrev').style.display = n > 1 ? 'block' : 'none';
+      document.getElementById('btnNext').textContent = n === TOTAL ? 'Envoyer ✓' : 'Suivant →';
+      document.getElementById('btnNext').disabled = !answers['q' + n] && n !== TOTAL;
+      updateProgress();
+      current = n;
+    }
+
+    function nextQ() {
+      if (current < TOTAL) {
+        showQ(current + 1);
+      } else {
+        submitForm();
+      }
+    }
+
+    function prevQ() {
+      if (current > 1) showQ(current - 1);
+    }
+
+    async function submitForm() {
+      const email = document.getElementById('emailContact').value;
+      const data = { ...answers, email: email || 'Non renseigné', source: 'questionnaire-terrain' };
+
+      try {
+        await fetch('https://formspree.io/f/xpqyrrol', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: new URLSearchParams(data)
+        });
+      } catch(e) { console.error(e); }
+
+      document.getElementById('mainForm').style.display = 'none';
+      document.getElementById('navBtns').style.display = 'none';
+      document.querySelector('.progress-label').style.display = 'none';
+      document.querySelector('.progress-bar').style.display = 'none';
+      document.getElementById('successScreen').style.display = 'block';
+    }
+
+    // Init
+    showQ(1);
+    document.getElementById('btnNext').disabled = true;
+  </script>
+</body>
+</html>
