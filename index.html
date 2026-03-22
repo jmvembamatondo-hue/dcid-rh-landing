@@ -394,7 +394,7 @@ footer{background:var(--navy);padding:40px 48px;border-top:1px solid rgba(255,25
   <!-- PROBLÈME -->
   <hr class="div"/>
   <div class="section">
-    <div class="slbl red">Pourquoi vos recrutements échouent</div>
+    <div class="slbl red">Pourquoi même les bons recrutements peuvent mal tourner</div>
     <div class="problem-layout">
       <div class="problem-text">
         <h2 class="stitle">Ce n'est pas un problème<br/>de candidats.<br/><em>C'est un problème de lecture.</em></h2>
@@ -983,11 +983,11 @@ footer{background:var(--navy);padding:40px 48px;border-top:1px solid rgba(255,25
   </div>
   <footer>
     <div class="footer-copy" style="color:rgba(255,255,255,0.22)">© 2026 DCID-RH · EuraTechnologies, Lille</div>
-    <div class="footer-links"><a onclick="showPage('home')">Accueil</a><a href="/cdn-cgi/l/email-protection#f49e9982919996959995809b9a909bb49399959d98da979b99">Contact direct</a></div>
+    <div class="footer-links"><a onclick="showPage('home')">Accueil</a><a href="mailto:jmvembamatondo@gmail.com">Contact direct</a></div>
   </footer>
 </div>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script>
 function showPage(id){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.getElementById('page-'+id).classList.add('active');
@@ -1001,4 +1001,10 @@ async function submitDemo(){
   const email=document.getElementById('f-email').value.trim();
   if(!prenom||!email||!email.includes('@')){alert('Merci de renseigner votre prénom et email.');return;}
   const data={prenom,nom:document.getElementById('f-nom').value,email,entreprise:document.getElementById('f-entreprise').value,poste:document.getElementById('f-poste').value,taille:document.getElementById('f-taille').value,recrutements:document.getElementById('f-recrutements').value,besoin:document.getElementById('f-besoin').value,contexte:document.getElementById('f-contexte').value};
-  try{await fetch('https://formspree.io/f/xkoqqbgr',{method:'POST',headers:{'Content-Type':'applicati
+  try{await fetch('https://formspree.io/f/xkoqqbgr',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});}catch(e){}
+  document.getElementById('demoForm').style.display='none';
+  document.getElementById('formSuccess').style.display='block';
+}
+</script>
+</body>
+</html>
