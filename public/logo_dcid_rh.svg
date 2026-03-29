@@ -1,0 +1,39 @@
+<svg width="680" height="300" viewBox="0 0 680 300" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#0D2340"/>
+      <stop offset="100%" stop-color="#070F1E"/>
+    </radialGradient>
+    <radialGradient id="glowring" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#38BDF8" stop-opacity="0.25"/>
+      <stop offset="100%" stop-color="#38BDF8" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="innerfill" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#185FA5" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#0C447C" stop-opacity="0.6"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Fond carré arrondi -->
+  <rect x="40" y="30" width="240" height="240" rx="36" fill="url(#bg)"/>
+
+  <!-- Halo -->
+  <circle cx="160" cy="150" r="95" fill="url(#glowring)"/>
+
+  <!-- Anneau unique -->
+  <circle cx="160" cy="150" r="72" fill="none" stroke="#38BDF8" stroke-width="2" opacity="0.55"/>
+
+  <!-- Cercle interne rempli -->
+  <circle cx="160" cy="150" r="36" fill="url(#innerfill)"/>
+  <circle cx="160" cy="150" r="36" fill="none" stroke="#38BDF8" stroke-width="2" opacity="0.9"/>
+
+  <!-- Point central -->
+  <circle cx="160" cy="150" r="9" fill="#38BDF8" opacity="0.95"/>
+  <circle cx="160" cy="150" r="4" fill="#FFFFFF" opacity="0.9"/>
+
+  <!-- WORDMARK -->
+  <text x="318" y="130" font-family="Arial, sans-serif" font-size="52" font-weight="500" fill="#FFFFFF" letter-spacing="-1.5" opacity="0.95">DCID</text>
+  <rect x="318" y="148" width="52" height="2" rx="1" fill="#38BDF8" opacity="0.6"/>
+  <text x="318" y="192" font-family="Arial, sans-serif" font-size="52" font-weight="500" fill="#38BDF8" letter-spacing="-1.5">RH</text>
+  <text x="318" y="222" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#38BDF8" opacity="0.55" letter-spacing="0.5">CULTURE FIT INTELLIGENCE</text>
+</svg>
